@@ -16,8 +16,6 @@ int main()
               << __GNUC_PATCHLEVEL__ << "\n";
 #endif
 
-    std::cout << "TOML_GCC = " << TOML_GCC << "\n";
-    std::cout << "TOML_FLOAT_CHARCONV = " << TOML_FLOAT_CHARCONV << "\n";
 
     std::cout << "\n=== stringstream test ===\n";
 
