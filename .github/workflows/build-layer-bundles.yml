@@ -63,6 +63,17 @@ jobs:
           chmod +x scripts/build-layer-bundles.sh
           scripts/build-layer-bundles.sh --clean --target "${{ matrix.target }}"
 
+      - name: Build ARM64 TOML diagnostic
+        if: matrix.target == 'glibc-aarch64'
+        run: |
+          aarch64-linux-gnu-g++ \
+            -std=c++17 \
+            -O2 \
+            -static-libstdc++ \
+            -static-libgcc \
+            tests/toml-float-diagnostic.cpp \
+            -o toml-float-diagnostic-aarch64
+
       - name: Archive bundle
         run: |
           tar -C "out/layer-bundles/${{ matrix.target }}" \
@@ -75,3 +86,11 @@ jobs:
           path: |
             out/layer-bundles/${{ matrix.target }}/*
             lsfg-vk-layer-${{ matrix.target }}.tar.xz
+
+      - name: Upload ARM64 TOML diagnostic
+        if: matrix.target == 'glibc-aarch64'
+        uses: actions/upload-artifact@v4
+        with:
+          name: toml-float-diagnostic-aarch64
+          path: toml-float-diagnostic-aarch64
+          if-no-files-found: error
